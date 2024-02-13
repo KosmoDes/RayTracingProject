@@ -4,6 +4,8 @@
 //Canvas
 Canvas::Canvas(int _h, int _w): _height(_h), _width(_w){
     this->_window.resize(_h);
+    this->_height = _h;
+    this->_width = _w;
     for(auto &x : this->_window){
         x.resize(_w);
     }
@@ -23,7 +25,10 @@ void Canvas::show(){
     }
 }
 
-void Canvas::setPoint(int x, int y, int brightnes){
+void Canvas::setPoint(int x, int y, int brightnes=1){
+    if (x < 0 || x >= this->_window.size() || y < 0 || y >= this->_window[0].size()) {
+        return;
+    }
     this->_window[x][y] = this->symbols[brightnes%3];
 }
 
@@ -64,16 +69,27 @@ double Vector3::length(){
     return sqrt(this->_vec[0]*this->_vec[0] + this->_vec[1]*this->_vec[1] + this->_vec[2]*this->_vec[2]);
 }
 
+std::ostream& operator <<(std::ostream& os, Vector3& vec){
+    for(auto x : vec._vec){
+        os << x << ' ';
+    }
+    os << ' ';
+    return os;
+}
+
 //Scene
-Scene::Scene() {}
+Scene::Scene(){
+    this->_objects = {new Object()};
+}
 Scene::Scene(std::vector<Object*> obj){
-    std::vector<Object*>::iterator it = static_cast<std::vector<Object*>::iterator>(this->_objects.begin());
-    for(auto x : obj) {(*it) = x; ++it;}
+    for(auto x : obj) {
+        this->_objects.push_back(x);
+    }
 }
 
 //Camera
-Vector3 Camera::CanvasToViewPort(int x, int y, Canvas C){
-    Vector3 res = {x*this->Vw/C._width, y*this->Vh/C._height, this->d};
+Vector3 Camera::CanvasToViewPort(int x, int y){
+    Vector3 res = {x*this->Vw/Cw, y*this->Vh/Ch, this->d};
     return res;
 }
 
@@ -93,6 +109,7 @@ std::vector<double> Camera::IntersectSphere(Vector3 O, Vector3 D, Sphere *sphere
     
     double t1 = (-k2 + sqrt(discriminant)) / (2*k1);
     double t2 = (-k2 - sqrt(discriminant)) / (2*k1);
+
     return std::vector<double>{t1, t2};
 }
 
@@ -110,8 +127,20 @@ double Camera::TraceRay(Vector3 O, Vector3 D, double t_min, double t_max, Scene 
             closest_sphere = sphere;
         }
     }
-    if(closest_sphere->type == "sphere"){
+    if(closest_sphere->type != "sphere"){
         return 0;
     }
     return closest_sphere->color.length();
+}
+
+//functions
+template <typename T>
+std::vector<T> range(T first, T last, T step=1){
+    std::vector<T> res;
+    T el = first;
+    while(el != last){
+        res.push_back(el);
+        el += step;
+    }
+    return res;
 }

@@ -2,7 +2,7 @@
 
 #define inf 1e10
 #define Ch 100
-#define Cw 50
+#define Cw 100
 
 class Canvas{
 public:
@@ -69,7 +69,7 @@ public:
     
     Camera(): d(1), Vw(1), Vh(1), Object("camera", coords, color){}
     Camera(double d): d(d), Vw(d), Vh(d), Object("camera", coords, color){}
-    Vector3 CanvasToViewPort(int x, int y, Canvas C);
+    Vector3 CanvasToViewPort(int x, int y);
     double TraceRay(Vector3 O, Vector3 D, double t_min, double t_max, Scene scene);
     std::vector<double> IntersectSphere(Vector3 O, Vector3 D, Sphere *sphere);
 };
