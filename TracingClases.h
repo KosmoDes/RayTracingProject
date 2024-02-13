@@ -1,7 +1,7 @@
 #include "STLheaders.h"
 
 #define inf 1e10
-#define Ch 100
+#define Ch 70
 #define Cw 100
 
 class Canvas{
@@ -14,6 +14,7 @@ public:
     Canvas(int _h, int _w);
     
     void show();
+    void next_frame();
     void setPoint(int x, int y, int brightnes);
 };
 
@@ -29,6 +30,8 @@ public:
     double operator *(Vector3);
 
     double length();
+
+    double& operator[](int i);
 };
 
 class Object{
@@ -69,6 +72,7 @@ public:
     
     Camera(): d(1), Vw(1), Vh(1), Object("camera", coords, color){}
     Camera(double d): d(d), Vw(d), Vh(d), Object("camera", coords, color){}
+    Camera(double d, Vector3 coord): d(d), Vw(d), Vh(d), Object("camera", coord, color){}
     Vector3 CanvasToViewPort(int x, int y);
     double TraceRay(Vector3 O, Vector3 D, double t_min, double t_max, Scene scene);
     std::vector<double> IntersectSphere(Vector3 O, Vector3 D, Sphere *sphere);

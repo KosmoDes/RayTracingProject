@@ -25,6 +25,12 @@ void Canvas::show(){
     }
 }
 
+void Canvas::next_frame(){
+    for(auto x : this->_window){
+        writeChar('\n');
+    }
+}
+
 void Canvas::setPoint(int x, int y, int brightnes=1){
     if (x < 0 || x >= this->_window.size() || y < 0 || y >= this->_window[0].size()) {
         return;
@@ -67,6 +73,10 @@ double Vector3::operator *(Vector3 vec){
 
 double Vector3::length(){
     return sqrt(this->_vec[0]*this->_vec[0] + this->_vec[1]*this->_vec[1] + this->_vec[2]*this->_vec[2]);
+}
+
+double& Vector3::operator[](int i){
+    return this->_vec[i];
 }
 
 std::ostream& operator <<(std::ostream& os, Vector3& vec){
