@@ -16,13 +16,14 @@ Canvas::Canvas(int _h, int _w): _height(_h), _width(_w){
     }
 }
 
-void Canvas::show(){
+bool Canvas::show(){
     for(auto x : this->_window){
         for(auto y : x){
             writeChar(y);
         }
         writeChar('\n');
     }
+    return 1;
 }
 
 void Canvas::next_frame(){
@@ -71,7 +72,12 @@ Vector3 Vector3::operator -(Vector3 vec){
 }
 
 double Vector3::operator *(Vector3 vec){
-    return this->_vec[0]*vec._vec[0] + this->_vec[1]*vec._vec[1] + this->_vec[2]*vec._vec[2];
+    double res = 0;
+    for(int i = 0; i < 3; ++i){
+        res += this->_vec[i]*vec._vec[i];
+
+    }
+    return res;
 }
 
 double Vector3::length(){
@@ -102,7 +108,7 @@ Scene::Scene(std::vector<Object*> obj){
 
 //Camera
 Vector3 Camera::CanvasToViewPort(int x, int y){
-    Vector3 res = {x*this->Vw/Cw, y*this->Vh/Ch, this->d};
+    Vector3 res = {x*this->Vw/Ch, y*this->Vh/Cw, this->d};
     return res;
 }
 
@@ -128,7 +134,7 @@ std::vector<double> Camera::IntersectSphere(Vector3 O, Vector3 D, Sphere *sphere
 
 double Camera::TraceRay(Vector3 O, Vector3 D, double t_min, double t_max, Scene scene){
     double closest_t = inf;
-    Object* closest_sphere;
+    Object* closest_sphere();
     for(auto sphere : scene._objects){
         std::vector<double> t1t2 = IntersectSphere(O, D, dynamic_cast<Sphere*>(sphere));
         if (t_min <= t1t2[0] && t1t2[0] <= t_max && t1t2[0] < closest_t){
