@@ -1,0 +1,10 @@
+^C:\USERS\KEKS\DOCUMENTS\PROJECTS\RAYTRACINGPROJECT\BUILD\CMAKEFILES\E226CD53EB2969015AC45B029BAC3489\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Keks/Documents/projects/RayTracingProject -BC:/Users/Keks/Documents/projects/RayTracingProject/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Keks/Documents/projects/RayTracingProject/build/RayTracing.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

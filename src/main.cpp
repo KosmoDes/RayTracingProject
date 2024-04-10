@@ -1,9 +1,8 @@
-#include "Tracing.h"
-#include "conio.h"
+#include "../headers/Tracing.h"
+#include <conio.h>
 
 int main(){
     using std::operator""s;
-    int h, w, d;
     Canvas c{Ch, Cw};
     Scene scene(std::vector<Object*>{new Sphere(25, Vector3{30, 25, 100}, Vector3{255, 223, 253})});
     Vector3 O{0, 0, 0};
